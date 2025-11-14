@@ -333,6 +333,11 @@ void uniffi_mdk_uniffi_fn_method_mdk_parse_key_package(uint64_t ptr, RustBuffer 
 RustBuffer uniffi_mdk_uniffi_fn_method_mdk_process_welcome(uint64_t ptr, RustBuffer wrapper_event_id, RustBuffer rumor_event_json, RustCallStatus *_Nonnull out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_REMOVE_MEMBERS
+#define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_REMOVE_MEMBERS
+RustBuffer uniffi_mdk_uniffi_fn_method_mdk_remove_members(uint64_t ptr, RustBuffer mls_group_id, RustBuffer member_public_keys, RustCallStatus *_Nonnull out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_FUNC_NEW_MDK
 #define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_FUNC_NEW_MDK
 uint64_t uniffi_mdk_uniffi_fn_func_new_mdk(RustBuffer db_path, RustCallStatus *_Nonnull out_status
@@ -697,6 +702,12 @@ uint16_t uniffi_mdk_uniffi_checksum_method_mdk_parse_key_package(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_PROCESS_WELCOME
 #define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_PROCESS_WELCOME
 uint16_t uniffi_mdk_uniffi_checksum_method_mdk_process_welcome(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_REMOVE_MEMBERS
+#define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_REMOVE_MEMBERS
+uint16_t uniffi_mdk_uniffi_checksum_method_mdk_remove_members(void
     
 );
 #endif

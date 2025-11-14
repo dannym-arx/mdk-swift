@@ -611,6 +611,11 @@ public protocol MdkProtocol: AnyObject, Sendable {
      */
     func processWelcome(wrapperEventId: String, rumorEventJson: String) throws  -> Welcome
     
+    /**
+     * Remove members from a group
+     */
+    func removeMembers(mlsGroupId: String, memberPublicKeys: [String]) throws  -> AddMembersResult
+    
 }
 /**
  * Main MDK instance with SQLite storage
@@ -856,6 +861,19 @@ open func processWelcome(wrapperEventId: String, rumorEventJson: String)throws  
             self.uniffiCloneHandle(),
         FfiConverterString.lower(wrapperEventId),
         FfiConverterString.lower(rumorEventJson),$0
+    )
+})
+}
+    
+    /**
+     * Remove members from a group
+     */
+open func removeMembers(mlsGroupId: String, memberPublicKeys: [String])throws  -> AddMembersResult  {
+    return try  FfiConverterTypeAddMembersResult_lift(try rustCallWithError(FfiConverterTypeMdkUniffiError_lift) {
+    uniffi_mdk_uniffi_fn_method_mdk_remove_members(
+            self.uniffiCloneHandle(),
+        FfiConverterString.lower(mlsGroupId),
+        FfiConverterSequenceString.lower(memberPublicKeys),$0
     )
 })
 }
@@ -2046,6 +2064,9 @@ private let initializationResult: InitializationResult = {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_mdk_uniffi_checksum_method_mdk_process_welcome() != 34932) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_mdk_uniffi_checksum_method_mdk_remove_members() != 46971) {
         return InitializationResult.apiChecksumMismatch
     }
 
