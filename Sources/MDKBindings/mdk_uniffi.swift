@@ -597,6 +597,11 @@ public protocol MdkProtocol: AnyObject, Sendable {
     func getRelays(mlsGroupId: String) throws  -> [String]
     
     /**
+     * Create a proposal to leave the group
+     */
+    func leaveGroup(mlsGroupId: String) throws  -> AddMembersResult
+    
+    /**
      * Merge pending commit for a group
      */
     func mergePendingCommit(mlsGroupId: String) throws 
@@ -607,6 +612,11 @@ public protocol MdkProtocol: AnyObject, Sendable {
     func parseKeyPackage(eventJson: String) throws 
     
     /**
+     * Process an incoming MLS message
+     */
+    func processMessage(eventJson: String) throws  -> ProcessMessageResult
+    
+    /**
      * Process a welcome message
      */
     func processWelcome(wrapperEventId: String, rumorEventJson: String) throws  -> Welcome
@@ -615,6 +625,16 @@ public protocol MdkProtocol: AnyObject, Sendable {
      * Remove members from a group
      */
     func removeMembers(mlsGroupId: String, memberPublicKeys: [String]) throws  -> AddMembersResult
+    
+    /**
+     * Update the current member's leaf node in an MLS group
+     */
+    func selfUpdate(mlsGroupId: String) throws  -> AddMembersResult
+    
+    /**
+     * Update group data (name, description, image, relays, admins)
+     */
+    func updateGroupData(mlsGroupId: String, update: GroupDataUpdate) throws  -> AddMembersResult
     
 }
 /**
@@ -831,6 +851,18 @@ open func getRelays(mlsGroupId: String)throws  -> [String]  {
 }
     
     /**
+     * Create a proposal to leave the group
+     */
+open func leaveGroup(mlsGroupId: String)throws  -> AddMembersResult  {
+    return try  FfiConverterTypeAddMembersResult_lift(try rustCallWithError(FfiConverterTypeMdkUniffiError_lift) {
+    uniffi_mdk_uniffi_fn_method_mdk_leave_group(
+            self.uniffiCloneHandle(),
+        FfiConverterString.lower(mlsGroupId),$0
+    )
+})
+}
+    
+    /**
      * Merge pending commit for a group
      */
 open func mergePendingCommit(mlsGroupId: String)throws   {try rustCallWithError(FfiConverterTypeMdkUniffiError_lift) {
@@ -850,6 +882,18 @@ open func parseKeyPackage(eventJson: String)throws   {try rustCallWithError(FfiC
         FfiConverterString.lower(eventJson),$0
     )
 }
+}
+    
+    /**
+     * Process an incoming MLS message
+     */
+open func processMessage(eventJson: String)throws  -> ProcessMessageResult  {
+    return try  FfiConverterTypeProcessMessageResult_lift(try rustCallWithError(FfiConverterTypeMdkUniffiError_lift) {
+    uniffi_mdk_uniffi_fn_method_mdk_process_message(
+            self.uniffiCloneHandle(),
+        FfiConverterString.lower(eventJson),$0
+    )
+})
 }
     
     /**
@@ -874,6 +918,31 @@ open func removeMembers(mlsGroupId: String, memberPublicKeys: [String])throws  -
             self.uniffiCloneHandle(),
         FfiConverterString.lower(mlsGroupId),
         FfiConverterSequenceString.lower(memberPublicKeys),$0
+    )
+})
+}
+    
+    /**
+     * Update the current member's leaf node in an MLS group
+     */
+open func selfUpdate(mlsGroupId: String)throws  -> AddMembersResult  {
+    return try  FfiConverterTypeAddMembersResult_lift(try rustCallWithError(FfiConverterTypeMdkUniffiError_lift) {
+    uniffi_mdk_uniffi_fn_method_mdk_self_update(
+            self.uniffiCloneHandle(),
+        FfiConverterString.lower(mlsGroupId),$0
+    )
+})
+}
+    
+    /**
+     * Update group data (name, description, image, relays, admins)
+     */
+open func updateGroupData(mlsGroupId: String, update: GroupDataUpdate)throws  -> AddMembersResult  {
+    return try  FfiConverterTypeAddMembersResult_lift(try rustCallWithError(FfiConverterTypeMdkUniffiError_lift) {
+    uniffi_mdk_uniffi_fn_method_mdk_update_group_data(
+            self.uniffiCloneHandle(),
+        FfiConverterString.lower(mlsGroupId),
+        FfiConverterTypeGroupDataUpdate_lower(update),$0
     )
 })
 }
@@ -1234,6 +1303,123 @@ public func FfiConverterTypeGroup_lift(_ buf: RustBuffer) throws -> Group {
 #endif
 public func FfiConverterTypeGroup_lower(_ value: Group) -> RustBuffer {
     return FfiConverterTypeGroup.lower(value)
+}
+
+
+/**
+ * Configuration for updating group data with optional fields
+ */
+public struct GroupDataUpdate: Equatable, Hashable {
+    /**
+     * Group name (optional)
+     */
+    public var name: String?
+    /**
+     * Group description (optional)
+     */
+    public var description: String?
+    /**
+     * Group image hash (optional, use Some(None) to clear)
+     */
+    public var imageHash: Data??
+    /**
+     * Group image encryption key (optional, use Some(None) to clear)
+     */
+    public var imageKey: Data??
+    /**
+     * Group image encryption nonce (optional, use Some(None) to clear)
+     */
+    public var imageNonce: Data??
+    /**
+     * Relays used by the group (optional)
+     */
+    public var relays: [String]?
+    /**
+     * Group admins (optional)
+     */
+    public var admins: [String]?
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        /**
+         * Group name (optional)
+         */name: String?, 
+        /**
+         * Group description (optional)
+         */description: String?, 
+        /**
+         * Group image hash (optional, use Some(None) to clear)
+         */imageHash: Data??, 
+        /**
+         * Group image encryption key (optional, use Some(None) to clear)
+         */imageKey: Data??, 
+        /**
+         * Group image encryption nonce (optional, use Some(None) to clear)
+         */imageNonce: Data??, 
+        /**
+         * Relays used by the group (optional)
+         */relays: [String]?, 
+        /**
+         * Group admins (optional)
+         */admins: [String]?) {
+        self.name = name
+        self.description = description
+        self.imageHash = imageHash
+        self.imageKey = imageKey
+        self.imageNonce = imageNonce
+        self.relays = relays
+        self.admins = admins
+    }
+
+    
+}
+
+#if compiler(>=6)
+extension GroupDataUpdate: Sendable {}
+#endif
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeGroupDataUpdate: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> GroupDataUpdate {
+        return
+            try GroupDataUpdate(
+                name: FfiConverterOptionString.read(from: &buf), 
+                description: FfiConverterOptionString.read(from: &buf), 
+                imageHash: FfiConverterOptionOptionData.read(from: &buf), 
+                imageKey: FfiConverterOptionOptionData.read(from: &buf), 
+                imageNonce: FfiConverterOptionOptionData.read(from: &buf), 
+                relays: FfiConverterOptionSequenceString.read(from: &buf), 
+                admins: FfiConverterOptionSequenceString.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: GroupDataUpdate, into buf: inout [UInt8]) {
+        FfiConverterOptionString.write(value.name, into: &buf)
+        FfiConverterOptionString.write(value.description, into: &buf)
+        FfiConverterOptionOptionData.write(value.imageHash, into: &buf)
+        FfiConverterOptionOptionData.write(value.imageKey, into: &buf)
+        FfiConverterOptionOptionData.write(value.imageNonce, into: &buf)
+        FfiConverterOptionSequenceString.write(value.relays, into: &buf)
+        FfiConverterOptionSequenceString.write(value.admins, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeGroupDataUpdate_lift(_ buf: RustBuffer) throws -> GroupDataUpdate {
+    return try FfiConverterTypeGroupDataUpdate.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeGroupDataUpdate_lower(_ value: GroupDataUpdate) -> RustBuffer {
+    return FfiConverterTypeGroupDataUpdate.lower(value)
 }
 
 
@@ -1721,6 +1907,140 @@ public func FfiConverterTypeMdkUniffiError_lower(_ value: MdkUniffiError) -> Rus
     return FfiConverterTypeMdkUniffiError.lower(value)
 }
 
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+/**
+ * Result of processing a message
+ */
+
+public enum ProcessMessageResult: Equatable, Hashable {
+    
+    /**
+     * An application message (usually a chat message)
+     */
+    case applicationMessage(
+        /**
+         * The processed message
+         */message: Message
+    )
+    /**
+     * A proposal message (add/remove member proposal)
+     */
+    case proposal(
+        /**
+         * The proposal result containing evolution event and welcome rumors
+         */result: AddMembersResult
+    )
+    /**
+     * External join proposal
+     */
+    case externalJoinProposal(
+        /**
+         * Hex-encoded MLS group ID this proposal belongs to
+         */mlsGroupId: String
+    )
+    /**
+     * Commit message
+     */
+    case commit(
+        /**
+         * Hex-encoded MLS group ID this commit applies to
+         */mlsGroupId: String
+    )
+    /**
+     * Unprocessable message
+     */
+    case unprocessable(
+        /**
+         * Hex-encoded MLS group ID of the message that could not be processed
+         */mlsGroupId: String
+    )
+
+
+
+}
+
+#if compiler(>=6)
+extension ProcessMessageResult: Sendable {}
+#endif
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeProcessMessageResult: FfiConverterRustBuffer {
+    typealias SwiftType = ProcessMessageResult
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> ProcessMessageResult {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .applicationMessage(message: try FfiConverterTypeMessage.read(from: &buf)
+        )
+        
+        case 2: return .proposal(result: try FfiConverterTypeAddMembersResult.read(from: &buf)
+        )
+        
+        case 3: return .externalJoinProposal(mlsGroupId: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 4: return .commit(mlsGroupId: try FfiConverterString.read(from: &buf)
+        )
+        
+        case 5: return .unprocessable(mlsGroupId: try FfiConverterString.read(from: &buf)
+        )
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: ProcessMessageResult, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case let .applicationMessage(message):
+            writeInt(&buf, Int32(1))
+            FfiConverterTypeMessage.write(message, into: &buf)
+            
+        
+        case let .proposal(result):
+            writeInt(&buf, Int32(2))
+            FfiConverterTypeAddMembersResult.write(result, into: &buf)
+            
+        
+        case let .externalJoinProposal(mlsGroupId):
+            writeInt(&buf, Int32(3))
+            FfiConverterString.write(mlsGroupId, into: &buf)
+            
+        
+        case let .commit(mlsGroupId):
+            writeInt(&buf, Int32(4))
+            FfiConverterString.write(mlsGroupId, into: &buf)
+            
+        
+        case let .unprocessable(mlsGroupId):
+            writeInt(&buf, Int32(5))
+            FfiConverterString.write(mlsGroupId, into: &buf)
+            
+        }
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeProcessMessageResult_lift(_ buf: RustBuffer) throws -> ProcessMessageResult {
+    return try FfiConverterTypeProcessMessageResult.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeProcessMessageResult_lower(_ value: ProcessMessageResult) -> RustBuffer {
+    return FfiConverterTypeProcessMessageResult.lower(value)
+}
+
+
 #if swift(>=5.8)
 @_documentation(visibility: private)
 #endif
@@ -1836,6 +2156,30 @@ fileprivate struct FfiConverterOptionTypeMessage: FfiConverterRustBuffer {
         switch try readInt(&buf) as Int8 {
         case 0: return nil
         case 1: return try FfiConverterTypeMessage.read(from: &buf)
+        default: throw UniffiInternalError.unexpectedOptionalTag
+        }
+    }
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+fileprivate struct FfiConverterOptionOptionData: FfiConverterRustBuffer {
+    typealias SwiftType = Data??
+
+    public static func write(_ value: SwiftType, into buf: inout [UInt8]) {
+        guard let value = value else {
+            writeInt(&buf, Int8(0))
+            return
+        }
+        writeInt(&buf, Int8(1))
+        FfiConverterOptionData.write(value, into: &buf)
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> SwiftType {
+        switch try readInt(&buf) as Int8 {
+        case 0: return nil
+        case 1: return try FfiConverterOptionData.read(from: &buf)
         default: throw UniffiInternalError.unexpectedOptionalTag
         }
     }
@@ -2057,16 +2401,28 @@ private let initializationResult: InitializationResult = {
     if (uniffi_mdk_uniffi_checksum_method_mdk_get_relays() != 55523) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_mdk_uniffi_checksum_method_mdk_leave_group() != 20702) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_mdk_uniffi_checksum_method_mdk_merge_pending_commit() != 22201) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_mdk_uniffi_checksum_method_mdk_parse_key_package() != 25544) {
         return InitializationResult.apiChecksumMismatch
     }
+    if (uniffi_mdk_uniffi_checksum_method_mdk_process_message() != 15589) {
+        return InitializationResult.apiChecksumMismatch
+    }
     if (uniffi_mdk_uniffi_checksum_method_mdk_process_welcome() != 34932) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_mdk_uniffi_checksum_method_mdk_remove_members() != 46971) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_mdk_uniffi_checksum_method_mdk_self_update() != 2372) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_mdk_uniffi_checksum_method_mdk_update_group_data() != 28107) {
         return InitializationResult.apiChecksumMismatch
     }
 

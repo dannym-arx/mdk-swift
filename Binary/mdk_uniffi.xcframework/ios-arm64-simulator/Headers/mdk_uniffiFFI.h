@@ -318,6 +318,11 @@ RustBuffer uniffi_mdk_uniffi_fn_method_mdk_get_pending_welcomes(uint64_t ptr, Ru
 RustBuffer uniffi_mdk_uniffi_fn_method_mdk_get_relays(uint64_t ptr, RustBuffer mls_group_id, RustCallStatus *_Nonnull out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_LEAVE_GROUP
+#define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_LEAVE_GROUP
+RustBuffer uniffi_mdk_uniffi_fn_method_mdk_leave_group(uint64_t ptr, RustBuffer mls_group_id, RustCallStatus *_Nonnull out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_MERGE_PENDING_COMMIT
 #define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_MERGE_PENDING_COMMIT
 void uniffi_mdk_uniffi_fn_method_mdk_merge_pending_commit(uint64_t ptr, RustBuffer mls_group_id, RustCallStatus *_Nonnull out_status
@@ -328,6 +333,11 @@ void uniffi_mdk_uniffi_fn_method_mdk_merge_pending_commit(uint64_t ptr, RustBuff
 void uniffi_mdk_uniffi_fn_method_mdk_parse_key_package(uint64_t ptr, RustBuffer event_json, RustCallStatus *_Nonnull out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_PROCESS_MESSAGE
+#define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_PROCESS_MESSAGE
+RustBuffer uniffi_mdk_uniffi_fn_method_mdk_process_message(uint64_t ptr, RustBuffer event_json, RustCallStatus *_Nonnull out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_PROCESS_WELCOME
 #define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_PROCESS_WELCOME
 RustBuffer uniffi_mdk_uniffi_fn_method_mdk_process_welcome(uint64_t ptr, RustBuffer wrapper_event_id, RustBuffer rumor_event_json, RustCallStatus *_Nonnull out_status
@@ -336,6 +346,16 @@ RustBuffer uniffi_mdk_uniffi_fn_method_mdk_process_welcome(uint64_t ptr, RustBuf
 #ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_REMOVE_MEMBERS
 #define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_REMOVE_MEMBERS
 RustBuffer uniffi_mdk_uniffi_fn_method_mdk_remove_members(uint64_t ptr, RustBuffer mls_group_id, RustBuffer member_public_keys, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_SELF_UPDATE
+#define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_SELF_UPDATE
+RustBuffer uniffi_mdk_uniffi_fn_method_mdk_self_update(uint64_t ptr, RustBuffer mls_group_id, RustCallStatus *_Nonnull out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_UPDATE_GROUP_DATA
+#define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_METHOD_MDK_UPDATE_GROUP_DATA
+RustBuffer uniffi_mdk_uniffi_fn_method_mdk_update_group_data(uint64_t ptr, RustBuffer mls_group_id, RustBuffer update, RustCallStatus *_Nonnull out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_FN_FUNC_NEW_MDK
@@ -687,6 +707,12 @@ uint16_t uniffi_mdk_uniffi_checksum_method_mdk_get_relays(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_LEAVE_GROUP
+#define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_LEAVE_GROUP
+uint16_t uniffi_mdk_uniffi_checksum_method_mdk_leave_group(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_MERGE_PENDING_COMMIT
 #define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_MERGE_PENDING_COMMIT
 uint16_t uniffi_mdk_uniffi_checksum_method_mdk_merge_pending_commit(void
@@ -699,6 +725,12 @@ uint16_t uniffi_mdk_uniffi_checksum_method_mdk_parse_key_package(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_PROCESS_MESSAGE
+#define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_PROCESS_MESSAGE
+uint16_t uniffi_mdk_uniffi_checksum_method_mdk_process_message(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_PROCESS_WELCOME
 #define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_PROCESS_WELCOME
 uint16_t uniffi_mdk_uniffi_checksum_method_mdk_process_welcome(void
@@ -708,6 +740,18 @@ uint16_t uniffi_mdk_uniffi_checksum_method_mdk_process_welcome(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_REMOVE_MEMBERS
 #define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_REMOVE_MEMBERS
 uint16_t uniffi_mdk_uniffi_checksum_method_mdk_remove_members(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_SELF_UPDATE
+#define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_SELF_UPDATE
+uint16_t uniffi_mdk_uniffi_checksum_method_mdk_self_update(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_UPDATE_GROUP_DATA
+#define UNIFFI_FFIDEF_UNIFFI_MDK_UNIFFI_CHECKSUM_METHOD_MDK_UPDATE_GROUP_DATA
+uint16_t uniffi_mdk_uniffi_checksum_method_mdk_update_group_data(void
     
 );
 #endif
